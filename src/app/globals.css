@@ -51,6 +51,13 @@
   --color-surface-container-lowest: #ffffff;
   --color-surface-bright: #f8faf8;
   --color-on-tertiary: #ffffff;
+
+  /* Coping tool category accents */
+  --color-accent-breathing: #9dbad5;
+  --color-accent-music: #e3b08c;
+  --color-accent-journaling: #beb4d6;
+  --color-accent-grounding: #d9c5b2;
+  --color-accent-mindset: #a8cdbf;
 }
 
 @theme inline {
@@ -103,6 +110,12 @@
   --color-surface-container-lowest: var(--color-surface-container-lowest);
   --color-surface-bright: var(--color-surface-bright);
   --color-on-tertiary: var(--color-on-tertiary);
+
+  --color-accent-breathing: var(--color-accent-breathing);
+  --color-accent-music: var(--color-accent-music);
+  --color-accent-journaling: var(--color-accent-journaling);
+  --color-accent-grounding: var(--color-accent-grounding);
+  --color-accent-mindset: var(--color-accent-mindset);
 
   --font-headline-lg: var(--font-quicksand);
   --font-headline-lg-mobile: var(--font-quicksand);
