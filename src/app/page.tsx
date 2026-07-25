@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -59,9 +60,12 @@ export default function Home() {
                 office.
               </p>
               <div className="flex flex-col sm:flex-row gap-gutter mt-stack-md">
-                <button className="bg-primary text-on-primary px-10 py-4 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 active:scale-95 transition-all duration-200">
+                <Link
+                  href="/home"
+                  className="bg-primary text-on-primary px-10 py-4 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 active:scale-95 transition-all duration-200 text-center"
+                >
                   Get Started
-                </button>
+                </Link>
                 <button className="bg-transparent border-2 border-primary text-primary px-10 py-4 rounded-full font-label-md text-label-md hover:bg-primary/5 transition-all duration-200">
                   Learn More
                 </button>
@@ -153,9 +157,12 @@ export default function Home() {
               Join thousands of others finding their calm in a world that
               never stops moving.
             </p>
-            <button className="bg-primary text-on-primary px-12 py-4 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 transition-all mt-stack-md">
+            <Link
+              href="/home"
+              className="bg-primary text-on-primary px-12 py-4 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 transition-all mt-stack-md"
+            >
               Start Your Haven
-            </button>
+            </Link>
           </div>
         </section>
       </main>
