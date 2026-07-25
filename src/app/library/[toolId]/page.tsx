@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { categories, getToolById, tools } from "@/lib/tools";
+import { SOUND_LOOP_FACTORIES } from "@/lib/ambientSound";
+import SoundPlayButton from "@/components/SoundPlayButton";
 
 export function generateStaticParams() {
   return tools.map((tool) => ({ toolId: tool.id }));
@@ -16,6 +18,7 @@ export default async function ToolDetail({
   if (!tool) notFound();
 
   const category = categories.find((c) => c.id === tool.category);
+  const isPlayable = tool.id in SOUND_LOOP_FACTORIES;
 
   return (
     <>
@@ -40,9 +43,13 @@ export default async function ToolDetail({
         <p className="text-body-lg font-body-lg text-on-surface-variant max-w-md">
           {tool.blurb}
         </p>
-        <p className="text-body-md font-body-md text-on-surface-variant max-w-md">
-          This exercise is still being built — check back soon.
-        </p>
+        {isPlayable ? (
+          <SoundPlayButton toolId={tool.id} title={tool.title} />
+        ) : (
+          <p className="text-body-md font-body-md text-on-surface-variant max-w-md">
+            This exercise is still being built — check back soon.
+          </p>
+        )}
         <Link
           href="/library"
           className="mt-stack-md bg-primary text-on-primary px-10 py-4 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 active:scale-95 transition-all duration-200"

@@ -153,3 +153,8 @@ export function createLofiLoop(ctx: AudioContext): SoundLoop {
     },
   };
 }
+
+export const SOUND_LOOP_FACTORIES: Record<string, (ctx: AudioContext) => SoundLoop> = {
+  "lofi-focus-sounds": createLofiLoop,
+  "calming-nature-sounds": createNatureLoop,
+};

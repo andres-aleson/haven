@@ -3,12 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { CopingTool } from "@/lib/tools";
-import { createLofiLoop, createNatureLoop, type SoundLoop } from "@/lib/ambientSound";
-
-const LOOP_FACTORIES: Record<string, (ctx: AudioContext) => SoundLoop> = {
-  "lofi-focus-sounds": createLofiLoop,
-  "calming-nature-sounds": createNatureLoop,
-};
+import { SOUND_LOOP_FACTORIES, type SoundLoop } from "@/lib/ambientSound";
 
 export default function SoundToolCard({
   tool,
@@ -29,7 +24,7 @@ export default function SoundToolCard({
   }, []);
 
   function togglePlay() {
-    const factory = LOOP_FACTORIES[tool.id];
+    const factory = SOUND_LOOP_FACTORIES[tool.id];
     if (!factory) return;
 
     if (isPlaying) {
