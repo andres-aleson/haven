@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { categories, getToolsByCategory } from "@/lib/tools";
+import SoundToolCard from "@/components/SoundToolCard";
 
 export default function Library() {
   return (
@@ -66,34 +67,38 @@ export default function Library() {
                 {category.label}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
-                {categoryTools.map((tool) => (
-                  <Link
-                    key={tool.id}
-                    href={`/library/${tool.id}`}
-                    className="group bg-surface-container-lowest rounded-xl border-[1.5px] border-primary/10 soft-glow-shadow p-stack-lg flex flex-col gap-stack-sm transition-all hover:-translate-y-1 active:scale-[0.99] duration-200"
-                  >
-                    <div
-                      className="w-14 h-14 rounded-full flex items-center justify-center mb-stack-sm"
-                      style={{ backgroundColor: category.accent }}
+                {categoryTools.map((tool) =>
+                  category.id === "music" ? (
+                    <SoundToolCard key={tool.id} tool={tool} accent={category.accent} />
+                  ) : (
+                    <Link
+                      key={tool.id}
+                      href={`/library/${tool.id}`}
+                      className="group bg-surface-container-lowest rounded-xl border-[1.5px] border-primary/10 soft-glow-shadow p-stack-lg flex flex-col gap-stack-sm transition-all hover:-translate-y-1 active:scale-[0.99] duration-200"
                     >
-                      <span
-                        className="material-symbols-outlined text-on-surface"
-                        aria-hidden="true"
+                      <div
+                        className="w-14 h-14 rounded-full flex items-center justify-center mb-stack-sm"
+                        style={{ backgroundColor: category.accent }}
                       >
-                        {tool.icon}
+                        <span
+                          className="material-symbols-outlined text-on-surface"
+                          aria-hidden="true"
+                        >
+                          {tool.icon}
+                        </span>
+                      </div>
+                      <h3 className="text-headline-md font-headline-md text-on-surface">
+                        {tool.title}
+                      </h3>
+                      <p className="text-body-md font-body-md text-on-surface-variant flex-grow">
+                        {tool.blurb}
+                      </p>
+                      <span className="text-label-md font-label-md text-on-surface-variant bg-surface-container-low w-fit px-3 py-1 rounded-full">
+                        {tool.time}
                       </span>
-                    </div>
-                    <h3 className="text-headline-md font-headline-md text-on-surface">
-                      {tool.title}
-                    </h3>
-                    <p className="text-body-md font-body-md text-on-surface-variant flex-grow">
-                      {tool.blurb}
-                    </p>
-                    <span className="text-label-md font-label-md text-on-surface-variant bg-surface-container-low w-fit px-3 py-1 rounded-full">
-                      {tool.time}
-                    </span>
-                  </Link>
-                ))}
+                    </Link>
+                  )
+                )}
               </div>
             </section>
           );
