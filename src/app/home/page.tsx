@@ -6,7 +6,7 @@ export default function HomeDashboard() {
     <>
       {/* Top App Bar */}
       <header className="bg-background flex justify-between items-center w-full px-container-margin py-stack-sm max-w-7xl mx-auto z-50">
-        <Link href="/home" className="text-headline-md font-headline-md text-primary">
+        <Link href="/" className="text-headline-md font-headline-md text-primary">
           Haven
         </Link>
         <nav className="hidden md:flex gap-stack-lg items-center">

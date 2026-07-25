@@ -4,7 +4,7 @@ export default function LibraryPlaceholder() {
   return (
     <>
       <header className="bg-background flex justify-between items-center w-full px-container-margin py-stack-sm max-w-7xl mx-auto z-50">
-        <Link href="/home" className="text-headline-md font-headline-md text-primary">
+        <Link href="/" className="text-headline-md font-headline-md text-primary">
           Haven
         </Link>
       </header>
@@ -21,7 +21,7 @@ export default function LibraryPlaceholder() {
           exercises, grounding tools, and more.
         </p>
         <Link
-          href="/home"
+          href="/"
           className="mt-stack-md bg-primary text-on-primary px-10 py-4 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 active:scale-95 transition-all duration-200"
         >
           Back to Home
