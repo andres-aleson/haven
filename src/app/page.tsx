@@ -28,6 +28,12 @@ export default function Home() {
           >
             Privacy
           </a>
+          <Link
+            href="/crisis-resources"
+            className="text-on-surface-variant text-label-md font-label-md py-1 hover:bg-surface-variant/50 transition-colors"
+          >
+            Crisis Resources
+          </Link>
         </nav>
         <div className="flex items-center gap-stack-md">
           <button
@@ -211,24 +217,12 @@ export default function Home() {
             © 2026 Haven Project. Non-judgemental support.
           </div>
           <div className="flex gap-stack-md">
-            <a
+            <Link
+              href="/crisis-resources"
               className="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
             >
               Crisis Resources
-            </a>
-            <a
-              className="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-            >
-              Terms
-            </a>
-            <a
-              className="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-            >
-              Privacy Policy
-            </a>
+            </Link>
           </div>
         </div>
       </footer>
