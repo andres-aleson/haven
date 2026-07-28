@@ -48,9 +48,12 @@ export default function Home() {
                 >
                   Get Started
                 </Link>
-                <button className="bg-transparent border-2 border-primary text-primary px-10 py-4 rounded-full font-label-md text-label-md hover:bg-primary/5 transition-all duration-200">
+                <Link
+                  href="/mission"
+                  className="bg-transparent border-2 border-primary text-primary px-10 py-4 rounded-full font-label-md text-label-md hover:bg-primary/5 transition-all duration-200 text-center"
+                >
                   Learn More
-                </button>
+                </Link>
               </div>
             </div>
 
