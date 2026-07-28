@@ -43,16 +43,30 @@ export default async function ToolDetail({
         <p className="text-body-lg font-body-lg text-on-surface-variant max-w-md">
           {tool.blurb}
         </p>
-        {isPlayable ? (
-          <SoundPlayButton toolId={tool.id} title={tool.title} />
-        ) : (
-          <p className="text-body-md font-body-md text-on-surface-variant max-w-md">
-            This exercise is still being built — check back soon.
-          </p>
-        )}
+
+        <div className="w-full max-w-md text-left bg-surface-container-lowest rounded-xl border-[1.5px] border-primary/10 soft-glow-shadow p-stack-lg mt-stack-sm">
+          <h2 className="text-label-md font-label-md text-primary uppercase tracking-widest mb-stack-md">
+            How It Works
+          </h2>
+          <ol className="flex flex-col gap-stack-md">
+            {tool.steps.map((step, i) => (
+              <li key={i} className="flex gap-stack-sm items-start">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-container text-on-primary-container text-caption font-caption flex items-center justify-center mt-0.5">
+                  {i + 1}
+                </span>
+                <span className="text-body-md font-body-md text-on-surface-variant">
+                  {step}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {isPlayable && <SoundPlayButton toolId={tool.id} title={tool.title} />}
+
         <Link
           href="/library"
-          className="mt-stack-md bg-primary text-on-primary px-10 py-4 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 active:scale-95 transition-all duration-200"
+          className="mt-stack-sm bg-primary text-on-primary px-10 py-4 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 active:scale-95 transition-all duration-200"
         >
           Back to Library
         </Link>
