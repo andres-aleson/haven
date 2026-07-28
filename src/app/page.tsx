@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import MarketingNav from "@/components/MarketingNav";
 
 export default function Home() {
   return (
@@ -9,32 +10,7 @@ export default function Home() {
         <div className="text-headline-md font-headline-md text-primary">
           Haven
         </div>
-        <nav className="hidden md:flex gap-stack-lg items-center">
-          <a
-            className="text-primary font-bold border-b-2 border-primary text-label-md font-label-md py-1"
-            href="#"
-          >
-            Home
-          </a>
-          <a
-            className="text-on-surface-variant text-label-md font-label-md py-1 hover:bg-surface-variant/50 transition-colors"
-            href="#"
-          >
-            Safety
-          </a>
-          <a
-            className="text-on-surface-variant text-label-md font-label-md py-1 hover:bg-surface-variant/50 transition-colors"
-            href="#"
-          >
-            Privacy
-          </a>
-          <Link
-            href="/crisis-resources"
-            className="text-on-surface-variant text-label-md font-label-md py-1 hover:bg-surface-variant/50 transition-colors"
-          >
-            Crisis Resources
-          </Link>
-        </nav>
+        <MarketingNav active="/" />
         <div className="flex items-center gap-stack-md">
           <button
             aria-label="Favorites"

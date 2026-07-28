@@ -1,62 +1,54 @@
 import Link from "next/link";
 import MarketingNav from "@/components/MarketingNav";
 
-const RESOURCES = [
+const POINTS = [
   {
-    name: "988 Suicide & Crisis Lifeline",
-    description:
-      "Free, confidential support 24/7 for anyone in emotional distress or thinking about suicide — not just in a crisis.",
-    icon: "support_agent",
-    actions: [
-      { label: "Call 988", href: "tel:988" },
-      { label: "Text 988", href: "sms:988" },
-    ],
+    icon: "verified_user",
+    title: "A judgment-free space",
+    body: "Nothing you do here is monitored, graded, or reported. There's no counselor reviewing what you write, and no record that follows you anywhere else.",
   },
   {
-    name: "Crisis Text Line",
-    description:
-      "Free, 24/7 support over text, if talking out loud doesn't feel possible right now.",
-    icon: "sms",
-    actions: [{ label: "Text HOME to 741741", href: "sms:741741" }],
+    icon: "health_and_safety",
+    title: "This isn't emergency care",
+    body: "Haven's tools can help with everyday anxiety and stress, but they're not a substitute for professional help. If you're in crisis or thinking about harming yourself, please use our Crisis Resources — free, confidential, and available right now.",
   },
   {
-    name: "The Trevor Project",
-    description:
-      "Crisis support for LGBTQ+ young people, available by phone or text, 24/7.",
-    icon: "diversity_3",
-    actions: [
-      { label: "Call 1-866-488-7386", href: "tel:+18664887386" },
-      { label: "Text START to 678678", href: "sms:678678" },
-    ],
+    icon: "toggle_on",
+    title: "You're always in control",
+    body: "Skip anything that doesn't feel right. Stop an exercise halfway through. Write one word or a hundred. There's no pressure to finish or to feel a certain way.",
+  },
+  {
+    icon: "group_off",
+    title: "No ads, no strangers",
+    body: "Haven doesn't show ads and doesn't have public profiles, comments, or messaging. It's just you and the tools — no one else can see or contact you here.",
   },
 ];
 
-export default function CrisisResources() {
+export default function Safety() {
   return (
     <>
       <header className="bg-background flex justify-between items-center w-full px-container-margin py-stack-sm max-w-7xl mx-auto z-50">
         <Link href="/" className="text-headline-md font-headline-md text-primary">
           Haven
         </Link>
-        <MarketingNav active="/crisis-resources" />
+        <MarketingNav active="/safety" />
       </header>
 
       <main className="flex-grow w-full max-w-3xl mx-auto px-container-margin py-stack-xl">
         <section className="mb-stack-xl text-center">
           <h1 className="text-headline-lg font-headline-lg text-on-surface mb-stack-sm">
-            You don&apos;t have to go through this alone
+            Your Safety Comes First
           </h1>
           <p className="text-body-lg font-body-lg text-on-surface-variant max-w-xl mx-auto">
-            These are free, confidential, and available right now — no
-            parent or school involved. If you&apos;re in immediate physical
-            danger, please call 911.
+            Haven is built to be a calm, judgment-free place. Here&apos;s
+            exactly what that means.
           </p>
         </section>
 
         <div className="flex flex-col gap-gutter">
-          {RESOURCES.map((resource) => (
+          {POINTS.map((point) => (
             <div
-              key={resource.name}
+              key={point.title}
               className="bg-surface-container-lowest rounded-xl border-[1.5px] border-primary/10 soft-glow-shadow p-stack-lg flex flex-col gap-stack-sm"
             >
               <div className="flex items-center gap-stack-sm">
@@ -65,32 +57,27 @@ export default function CrisisResources() {
                     className="material-symbols-outlined text-on-primary-container"
                     aria-hidden="true"
                   >
-                    {resource.icon}
+                    {point.icon}
                   </span>
                 </div>
                 <h2 className="text-headline-md font-headline-md text-on-surface">
-                  {resource.name}
+                  {point.title}
                 </h2>
               </div>
               <p className="text-body-md font-body-md text-on-surface-variant">
-                {resource.description}
+                {point.body}
               </p>
-              <div className="flex flex-wrap gap-gutter mt-stack-sm">
-                {resource.actions.map((action) => (
-                  <a
-                    key={action.label}
-                    href={action.href}
-                    className="bg-primary text-on-primary px-6 py-3 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 active:scale-95 transition-all duration-200"
-                  >
-                    {action.label}
-                  </a>
-                ))}
-              </div>
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-stack-xl">
+        <div className="text-center mt-stack-xl flex flex-col sm:flex-row gap-gutter justify-center">
+          <Link
+            href="/crisis-resources"
+            className="bg-primary text-on-primary px-10 py-4 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 active:scale-95 transition-all duration-200"
+          >
+            Need help right now?
+          </Link>
           <Link
             href="/"
             className="bg-transparent border-2 border-primary text-primary px-10 py-4 rounded-full font-label-md text-label-md hover:bg-primary/5 transition-all duration-200"
