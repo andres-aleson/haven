@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getTodayLocalDateString } from "@/lib/streak";
 
 type Emotion = {
   id: string;
@@ -83,7 +84,7 @@ export default function MoodCheckIn() {
     fetch("/api/checkins", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mood: id }),
+      body: JSON.stringify({ mood: id, localDate: getTodayLocalDateString() }),
     }).catch(() => {
       // Check-in still works locally even if saving the streak fails.
     });
