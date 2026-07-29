@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MoodCheckIn from "@/components/MoodCheckIn";
+import { AppTopNav, AppBottomNav } from "@/components/AppNav";
 
 export default function HomeDashboard() {
   return (
@@ -9,26 +10,7 @@ export default function HomeDashboard() {
         <Link href="/" className="text-headline-md font-headline-md text-primary">
           Haven
         </Link>
-        <nav className="hidden md:flex gap-stack-lg items-center">
-          <Link
-            href="/home"
-            className="text-primary font-bold border-b-2 border-primary text-label-md font-label-md py-1"
-          >
-            Home
-          </Link>
-          <Link
-            href="/library"
-            className="text-on-surface-variant text-label-md font-label-md py-1 hover:bg-surface-variant/50 transition-colors"
-          >
-            Library
-          </Link>
-          <span className="text-on-surface-variant/50 text-label-md font-label-md py-1 cursor-not-allowed">
-            Stats
-          </span>
-          <span className="text-on-surface-variant/50 text-label-md font-label-md py-1 cursor-not-allowed">
-            Profile
-          </span>
-        </nav>
+        <AppTopNav active="/home" />
         <div className="flex items-center gap-stack-md">
           <button
             aria-label="Favorites"
@@ -83,36 +65,7 @@ export default function HomeDashboard() {
         <MoodCheckIn />
       </main>
 
-      {/* Bottom nav (mobile only) */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest shadow-[0_-4px_20px_0_rgba(74,101,73,0.06)] flex justify-around items-center px-4 py-2 rounded-t-xl">
-        <Link
-          href="/home"
-          className="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200 transition-transform"
-        >
-          <span
-            className="material-symbols-outlined"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            home
-          </span>
-          <span className="text-caption font-caption">Home</span>
-        </Link>
-        <Link
-          href="/library"
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all"
-        >
-          <span className="material-symbols-outlined">grid_view</span>
-          <span className="text-caption font-caption">Library</span>
-        </Link>
-        <span className="flex flex-col items-center justify-center text-on-surface-variant/50">
-          <span className="material-symbols-outlined">insights</span>
-          <span className="text-caption font-caption">Stats</span>
-        </span>
-        <span className="flex flex-col items-center justify-center text-on-surface-variant/50">
-          <span className="material-symbols-outlined">person</span>
-          <span className="text-caption font-caption">Profile</span>
-        </span>
-      </nav>
+      <AppBottomNav active="/home" />
     </>
   );
 }

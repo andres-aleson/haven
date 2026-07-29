@@ -78,6 +78,17 @@ export default function MoodCheckIn() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = emotions.find((e) => e.id === selectedId) ?? null;
 
+  function handleSelect(id: string) {
+    setSelectedId(id);
+    fetch("/api/checkins", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mood: id }),
+    }).catch(() => {
+      // Check-in still works locally even if saving the streak fails.
+    });
+  }
+
   return (
     <section className="mt-stack-xl">
       <h2 className="text-headline-md font-headline-md text-on-surface mb-stack-sm">
@@ -95,7 +106,7 @@ export default function MoodCheckIn() {
               key={emotion.id}
               type="button"
               aria-pressed={isSelected}
-              onClick={() => setSelectedId(emotion.id)}
+              onClick={() => handleSelect(emotion.id)}
               className={`flex flex-col items-center gap-stack-sm p-stack-md rounded-xl border-[1.5px] transition-all duration-200 hover:-translate-y-0.5 ${
                 isSelected
                   ? "bg-primary-container border-primary"
