@@ -24,6 +24,13 @@ export function getDb(): Database.Database {
     if (!columns.some((c) => c.name === "local_date")) {
       db.exec("ALTER TABLE checkins ADD COLUMN local_date TEXT");
     }
+
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS favorites (
+        tool_id TEXT PRIMARY KEY,
+        created_at TEXT NOT NULL
+      )
+    `);
   }
   return db;
 }
@@ -55,4 +62,23 @@ export function getRecentCheckIns(limit = 500): CheckIn[] {
       "SELECT id, mood, created_at, local_date FROM checkins ORDER BY created_at DESC LIMIT ?"
     )
     .all(limit) as CheckIn[];
+}
+
+export function setFavorite(toolId: string, favorited: boolean): void {
+  if (favorited) {
+    getDb()
+      .prepare(
+        "INSERT OR IGNORE INTO favorites (tool_id, created_at) VALUES (?, ?)"
+      )
+      .run(toolId, new Date().toISOString());
+  } else {
+    getDb().prepare("DELETE FROM favorites WHERE tool_id = ?").run(toolId);
+  }
+}
+
+export function getFavoriteToolIds(): string[] {
+  const rows = getDb()
+    .prepare("SELECT tool_id FROM favorites ORDER BY created_at DESC")
+    .all() as { tool_id: string }[];
+  return rows.map((r) => r.tool_id);
 }

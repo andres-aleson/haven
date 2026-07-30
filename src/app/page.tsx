@@ -12,18 +12,13 @@ export default function Home() {
         </div>
         <MarketingNav active="/" />
         <div className="flex items-center gap-stack-md">
-          <button
+          <Link
+            href="/favorites"
             aria-label="Favorites"
             className="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 rounded-full transition-all"
           >
             favorite
-          </button>
-          <button
-            aria-label="History"
-            className="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 rounded-full transition-all"
-          >
-            history
-          </button>
+          </Link>
         </div>
       </header>
 

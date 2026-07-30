@@ -1,9 +1,16 @@
 import Link from "next/link";
 import { categories, getToolsByCategory } from "@/lib/tools";
+import { getFavoriteToolIds } from "@/lib/db";
 import SoundToolCard from "@/components/SoundToolCard";
+import ToolCard from "@/components/ToolCard";
 import { AppTopNav, AppBottomNav } from "@/components/AppNav";
 
+// Favorites can change between visits — never cache this page.
+export const dynamic = "force-dynamic";
+
 export default function Library() {
+  const favoriteToolIds = new Set(getFavoriteToolIds());
+
   return (
     <>
       {/* Top App Bar */}
@@ -13,18 +20,13 @@ export default function Library() {
         </Link>
         <AppTopNav active="/library" />
         <div className="flex items-center gap-stack-md">
-          <button
+          <Link
+            href="/favorites"
             aria-label="Favorites"
             className="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 rounded-full transition-all"
           >
             favorite
-          </button>
-          <button
-            aria-label="History"
-            className="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 rounded-full transition-all"
-          >
-            history
-          </button>
+          </Link>
         </div>
       </header>
 
@@ -51,34 +53,19 @@ export default function Library() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
                 {categoryTools.map((tool) =>
                   category.id === "music" ? (
-                    <SoundToolCard key={tool.id} tool={tool} accent={category.accent} />
-                  ) : (
-                    <Link
+                    <SoundToolCard
                       key={tool.id}
-                      href={`/library/${tool.id}`}
-                      className="group bg-surface-container-lowest rounded-xl border-[1.5px] border-primary/10 soft-glow-shadow p-stack-lg flex flex-col gap-stack-sm transition-all hover:-translate-y-1 active:scale-[0.99] duration-200"
-                    >
-                      <div
-                        className="w-14 h-14 rounded-full flex items-center justify-center mb-stack-sm"
-                        style={{ backgroundColor: category.accent }}
-                      >
-                        <span
-                          className="material-symbols-outlined text-on-surface"
-                          aria-hidden="true"
-                        >
-                          {tool.icon}
-                        </span>
-                      </div>
-                      <h3 className="text-headline-md font-headline-md text-on-surface">
-                        {tool.title}
-                      </h3>
-                      <p className="text-body-md font-body-md text-on-surface-variant flex-grow">
-                        {tool.blurb}
-                      </p>
-                      <span className="text-label-md font-label-md text-on-surface-variant bg-surface-container-low w-fit px-3 py-1 rounded-full">
-                        {tool.time}
-                      </span>
-                    </Link>
+                      tool={tool}
+                      accent={category.accent}
+                      favorited={favoriteToolIds.has(tool.id)}
+                    />
+                  ) : (
+                    <ToolCard
+                      key={tool.id}
+                      tool={tool}
+                      accent={category.accent}
+                      favorited={favoriteToolIds.has(tool.id)}
+                    />
                   )
                 )}
               </div>

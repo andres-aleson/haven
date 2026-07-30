@@ -4,13 +4,16 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { CopingTool } from "@/lib/tools";
 import { SOUND_LOOP_FACTORIES, type SoundLoop } from "@/lib/ambientSound";
+import FavoriteButton from "./FavoriteButton";
 
 export default function SoundToolCard({
   tool,
   accent,
+  favorited,
 }: {
   tool: CopingTool;
   accent: string;
+  favorited: boolean;
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const ctxRef = useRef<AudioContext | null>(null);
@@ -63,30 +66,34 @@ export default function SoundToolCard({
         <p className="text-body-md font-body-md text-on-surface-variant flex-grow">
           {tool.blurb}
         </p>
+      </Link>
+
+      <div className="flex items-center justify-between gap-gutter">
         <span className="text-label-md font-label-md text-on-surface-variant bg-surface-container-low w-fit px-3 py-1 rounded-full">
           {tool.time}
         </span>
-      </Link>
-
-      <button
-        type="button"
-        onClick={togglePlay}
-        aria-pressed={isPlaying}
-        aria-label={isPlaying ? `Pause ${tool.title}` : `Play ${tool.title}`}
-        className={`absolute top-stack-lg right-stack-lg w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-95 ${
-          isPlaying
-            ? "bg-primary text-on-primary"
-            : "bg-surface-container-low text-primary hover:bg-primary/10"
-        }`}
-      >
-        <span
-          className="material-symbols-outlined"
-          style={{ fontVariationSettings: "'FILL' 1" }}
-          aria-hidden="true"
+        <button
+          type="button"
+          onClick={togglePlay}
+          aria-pressed={isPlaying}
+          aria-label={isPlaying ? `Pause ${tool.title}` : `Play ${tool.title}`}
+          className={`w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-95 ${
+            isPlaying
+              ? "bg-primary text-on-primary"
+              : "bg-surface-container-low text-primary hover:bg-primary/10"
+          }`}
         >
-          {isPlaying ? "pause" : "play_arrow"}
-        </span>
-      </button>
+          <span
+            className="material-symbols-outlined"
+            style={{ fontVariationSettings: "'FILL' 1" }}
+            aria-hidden="true"
+          >
+            {isPlaying ? "pause" : "play_arrow"}
+          </span>
+        </button>
+      </div>
+
+      <FavoriteButton toolId={tool.id} title={tool.title} initialFavorited={favorited} />
     </div>
   );
 }
