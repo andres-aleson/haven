@@ -31,6 +31,16 @@ export function getDb(): Database.Database {
         created_at TEXT NOT NULL
       )
     `);
+
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS journal_entries (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        prompt TEXT,
+        body TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      )
+    `);
   }
   return db;
 }
@@ -81,4 +91,38 @@ export function getFavoriteToolIds(): string[] {
     .prepare("SELECT tool_id FROM favorites ORDER BY created_at DESC")
     .all() as { tool_id: string }[];
   return rows.map((r) => r.tool_id);
+}
+
+export interface JournalEntry {
+  id: number;
+  title: string;
+  prompt: string | null;
+  body: string;
+  created_at: string;
+}
+
+export function createJournalEntry(
+  title: string,
+  prompt: string | null,
+  body: string
+): JournalEntry {
+  const created_at = new Date().toISOString();
+  const result = getDb()
+    .prepare(
+      "INSERT INTO journal_entries (title, prompt, body, created_at) VALUES (?, ?, ?, ?)"
+    )
+    .run(title, prompt, body, created_at);
+  return { id: Number(result.lastInsertRowid), title, prompt, body, created_at };
+}
+
+export function getJournalEntries(limit = 200): JournalEntry[] {
+  return getDb()
+    .prepare(
+      "SELECT id, title, prompt, body, created_at FROM journal_entries ORDER BY created_at DESC LIMIT ?"
+    )
+    .all(limit) as JournalEntry[];
+}
+
+export function deleteJournalEntry(id: number): void {
+  getDb().prepare("DELETE FROM journal_entries WHERE id = ?").run(id);
 }

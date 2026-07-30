@@ -3,6 +3,7 @@ import Link from "next/link";
 const ITEMS = [
   { href: "/home", label: "Home", icon: "home" },
   { href: "/library", label: "Library", icon: "grid_view" },
+  { href: "/journal", label: "Journal", icon: "auto_stories" },
   { href: "/stats", label: "Stats", icon: "insights" },
 ];
 
