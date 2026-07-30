@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { getTodayLocalDateString } from "@/lib/streak";
 
 type Emotion = {
@@ -91,7 +92,7 @@ export default function MoodCheckIn() {
   }
 
   return (
-    <section className="mt-stack-xl">
+    <section>
       <h2 className="text-headline-md font-headline-md text-on-surface mb-stack-sm">
         How do you feel right now?
       </h2>
@@ -130,17 +131,42 @@ export default function MoodCheckIn() {
       </div>
 
       {selected && (
-        <div
-          role="status"
-          className="mt-stack-lg bg-secondary-container/30 border-[1.5px] border-secondary/20 rounded-xl p-stack-lg flex flex-col items-start gap-stack-sm"
-        >
-          <span className="text-label-md font-label-md text-secondary uppercase tracking-widest">
-            Feeling {selected.label.toLowerCase()}
-          </span>
-          <p className="text-body-lg font-body-lg text-on-surface">
-            {selected.message}
-          </p>
-        </div>
+        <>
+          <div
+            role="status"
+            className="mt-stack-lg bg-secondary-container/30 border-[1.5px] border-secondary/20 rounded-xl p-stack-lg flex flex-col items-start gap-stack-sm"
+          >
+            <span className="text-label-md font-label-md text-secondary uppercase tracking-widest">
+              Feeling {selected.label.toLowerCase()}
+            </span>
+            <p className="text-body-lg font-body-lg text-on-surface">
+              {selected.message}
+            </p>
+          </div>
+
+          <Link
+            href="/library"
+            className="group block relative overflow-hidden bg-surface-container-lowest rounded-xl border-[1.5px] border-primary/10 soft-glow-shadow transition-all hover:-translate-y-1 active:scale-[0.99] duration-200 mt-stack-lg"
+          >
+            <div className="p-stack-xl flex flex-col gap-stack-md">
+              <h2 className="text-headline-lg font-headline-lg text-on-surface">
+                Explore the Coping Library
+              </h2>
+              <p className="text-body-md font-body-md text-on-surface-variant max-w-md">
+                Find a quick exercise for anxiety, stress, or a moment of
+                calm — whenever you need it.
+              </p>
+              <div className="flex items-center gap-unit text-primary font-bold">
+                <span className="text-label-md font-label-md">
+                  Open Library
+                </span>
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  arrow_forward
+                </span>
+              </div>
+            </div>
+          </Link>
+        </>
       )}
     </section>
   );

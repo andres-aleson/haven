@@ -33,30 +33,6 @@ export default function HomeDashboard() {
           </p>
         </section>
 
-        {/* Primary action: Coping Tools Library */}
-        <Link
-          href="/library"
-          className="group block relative overflow-hidden bg-surface-container-lowest rounded-xl border-[1.5px] border-primary/10 soft-glow-shadow transition-all hover:-translate-y-1 active:scale-[0.99] duration-200"
-        >
-          <div className="p-stack-xl flex flex-col gap-stack-md">
-            <h2 className="text-headline-lg font-headline-lg text-on-surface">
-              Explore the Coping Library
-            </h2>
-            <p className="text-body-md font-body-md text-on-surface-variant max-w-md">
-              Find a quick exercise for anxiety, stress, or a moment of calm —
-              whenever you need it.
-            </p>
-            <div className="flex items-center gap-unit text-primary font-bold">
-              <span className="text-label-md font-label-md">
-                Open Library
-              </span>
-              <span className="material-symbols-outlined" aria-hidden="true">
-                arrow_forward
-              </span>
-            </div>
-          </div>
-        </Link>
-
         <MoodCheckIn />
       </main>
 
