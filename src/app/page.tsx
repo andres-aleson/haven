@@ -1,26 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import MarketingNav from "@/components/MarketingNav";
+import MarketingHeader from "@/components/MarketingHeader";
 
 export default function Home() {
   return (
     <>
       {/* Top App Bar */}
-      <header className="bg-background flex justify-between items-center w-full px-container-margin py-stack-sm max-w-7xl mx-auto z-50">
-        <div className="text-headline-md font-headline-md text-primary">
-          Haven
-        </div>
-        <MarketingNav active="/" />
-        <div className="flex items-center gap-stack-md">
-          <Link
-            href="/favorites"
-            aria-label="Favorites"
-            className="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 rounded-full transition-all"
-          >
-            favorite
-          </Link>
-        </div>
-      </header>
+      <MarketingHeader active="/" />
 
       <main className="flex-grow flex flex-col">
         {/* Hero */}

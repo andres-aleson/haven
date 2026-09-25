@@ -1,5 +1,5 @@
 import Link from "next/link";
-import MarketingNav from "@/components/MarketingNav";
+import MarketingHeader from "@/components/MarketingHeader";
 
 const RESOURCES = [
   {
@@ -34,12 +34,7 @@ const RESOURCES = [
 export default function CrisisResources() {
   return (
     <>
-      <header className="bg-background flex justify-between items-center w-full px-container-margin py-stack-sm max-w-7xl mx-auto z-50">
-        <Link href="/" className="text-headline-md font-headline-md text-primary">
-          Haven
-        </Link>
-        <MarketingNav active="/crisis-resources" />
-      </header>
+      <MarketingHeader active="/crisis-resources" />
 
       <main className="flex-grow w-full max-w-3xl mx-auto px-container-margin py-stack-xl">
         <section className="mb-stack-xl text-center">
