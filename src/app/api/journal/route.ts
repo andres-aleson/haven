@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { createJournalEntry, deleteJournalEntry, getJournalEntries } from "@/lib/db";
 
-// Reads/writes a mutable local database — never cache this route.
+// Reads/writes a mutable database — never cache this route.
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  return NextResponse.json({ entries: getJournalEntries() });
+  return NextResponse.json({ entries: await getJournalEntries() });
 }
 
 export async function POST(request: Request) {
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const entry = createJournalEntry(title, prompt, entryBody);
+  const entry = await createJournalEntry(title, prompt, entryBody);
   return NextResponse.json({ entry }, { status: 201 });
 }
 
@@ -31,6 +31,6 @@ export async function DELETE(request: Request) {
   if (!id) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
-  deleteJournalEntry(id);
+  await deleteJournalEntry(id);
   return NextResponse.json({ ok: true });
 }

@@ -1,48 +1,71 @@
-import Database from "better-sqlite3";
-import path from "path";
+import { Pool } from "pg";
 
-let db: Database.Database | null = null;
+/**
+ * All tables live in the `haven` Postgres schema. DATABASE_URL should use the
+ * `haven_app` role, which can only see that schema; `search_path` is pinned
+ * here too so queries never fall through to `public`.
+ */
+const SCHEMA = "haven";
 
-export function getDb(): Database.Database {
-  if (!db) {
-    const dbPath = path.join(process.cwd(), "data", "haven.db");
-    db = new Database(dbPath);
-    db.pragma("journal_mode = WAL");
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS checkins (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        mood TEXT NOT NULL,
-        created_at TEXT NOT NULL,
-        local_date TEXT
-      )
-    `);
+// Reuse one pool across hot reloads in dev and warm invocations on Vercel.
+const globalForDb = globalThis as unknown as {
+  havenPool?: Pool;
+  havenReady?: Promise<void>;
+};
 
-    // Migration for databases created before local_date existed.
-    const columns = db.prepare("PRAGMA table_info(checkins)").all() as {
-      name: string;
-    }[];
-    if (!columns.some((c) => c.name === "local_date")) {
-      db.exec("ALTER TABLE checkins ADD COLUMN local_date TEXT");
+function getPool(): Pool {
+  if (!globalForDb.havenPool) {
+    const connectionString = process.env.DATABASE_URL;
+    if (!connectionString) {
+      throw new Error("DATABASE_URL is not set");
     }
-
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS favorites (
-        tool_id TEXT PRIMARY KEY,
-        created_at TEXT NOT NULL
-      )
-    `);
-
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS journal_entries (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        prompt TEXT,
-        body TEXT NOT NULL,
-        created_at TEXT NOT NULL
-      )
-    `);
+    const isLocal = /localhost|127\.0\.0\.1/.test(connectionString);
+    globalForDb.havenPool = new Pool({
+      connectionString,
+      ssl: isLocal ? undefined : { rejectUnauthorized: false },
+      max: 5,
+      options: `-c search_path=${SCHEMA}`,
+    });
   }
-  return db;
+  return globalForDb.havenPool;
+}
+
+async function ensureSchema(): Promise<void> {
+  const pool = getPool();
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS ${SCHEMA}.checkins (
+      id SERIAL PRIMARY KEY,
+      mood TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      local_date TEXT
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS ${SCHEMA}.favorites (
+      tool_id TEXT PRIMARY KEY,
+      created_at TEXT NOT NULL
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS ${SCHEMA}.journal_entries (
+      id SERIAL PRIMARY KEY,
+      title TEXT NOT NULL,
+      prompt TEXT,
+      body TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    )
+  `);
+}
+
+async function getDb(): Promise<Pool> {
+  if (!globalForDb.havenReady) {
+    globalForDb.havenReady = ensureSchema().catch((err) => {
+      globalForDb.havenReady = undefined;
+      throw err;
+    });
+  }
+  await globalForDb.havenReady;
+  return getPool();
 }
 
 export interface CheckIn {
@@ -58,38 +81,37 @@ export interface CheckIn {
  * so it trusts the client for this rather than deriving it from `created_at`
  * (which is UTC and would put checkins on the wrong day near midnight).
  */
-export function recordCheckIn(mood: string, localDate: string): void {
-  getDb()
-    .prepare(
-      "INSERT INTO checkins (mood, created_at, local_date) VALUES (?, ?, ?)"
-    )
-    .run(mood, new Date().toISOString(), localDate);
+export async function recordCheckIn(mood: string, localDate: string): Promise<void> {
+  await (await getDb()).query(
+    "INSERT INTO checkins (mood, created_at, local_date) VALUES ($1, $2, $3)",
+    [mood, new Date().toISOString(), localDate]
+  );
 }
 
-export function getRecentCheckIns(limit = 500): CheckIn[] {
-  return getDb()
-    .prepare(
-      "SELECT id, mood, created_at, local_date FROM checkins ORDER BY created_at DESC LIMIT ?"
-    )
-    .all(limit) as CheckIn[];
+export async function getRecentCheckIns(limit = 500): Promise<CheckIn[]> {
+  const { rows } = await (await getDb()).query<CheckIn>(
+    "SELECT id, mood, created_at, local_date FROM checkins ORDER BY created_at DESC LIMIT $1",
+    [limit]
+  );
+  return rows;
 }
 
-export function setFavorite(toolId: string, favorited: boolean): void {
+export async function setFavorite(toolId: string, favorited: boolean): Promise<void> {
+  const db = await getDb();
   if (favorited) {
-    getDb()
-      .prepare(
-        "INSERT OR IGNORE INTO favorites (tool_id, created_at) VALUES (?, ?)"
-      )
-      .run(toolId, new Date().toISOString());
+    await db.query(
+      "INSERT INTO favorites (tool_id, created_at) VALUES ($1, $2) ON CONFLICT (tool_id) DO NOTHING",
+      [toolId, new Date().toISOString()]
+    );
   } else {
-    getDb().prepare("DELETE FROM favorites WHERE tool_id = ?").run(toolId);
+    await db.query("DELETE FROM favorites WHERE tool_id = $1", [toolId]);
   }
 }
 
-export function getFavoriteToolIds(): string[] {
-  const rows = getDb()
-    .prepare("SELECT tool_id FROM favorites ORDER BY created_at DESC")
-    .all() as { tool_id: string }[];
+export async function getFavoriteToolIds(): Promise<string[]> {
+  const { rows } = await (await getDb()).query<{ tool_id: string }>(
+    "SELECT tool_id FROM favorites ORDER BY created_at DESC"
+  );
   return rows.map((r) => r.tool_id);
 }
 
@@ -101,28 +123,27 @@ export interface JournalEntry {
   created_at: string;
 }
 
-export function createJournalEntry(
+export async function createJournalEntry(
   title: string,
   prompt: string | null,
   body: string
-): JournalEntry {
+): Promise<JournalEntry> {
   const created_at = new Date().toISOString();
-  const result = getDb()
-    .prepare(
-      "INSERT INTO journal_entries (title, prompt, body, created_at) VALUES (?, ?, ?, ?)"
-    )
-    .run(title, prompt, body, created_at);
-  return { id: Number(result.lastInsertRowid), title, prompt, body, created_at };
+  const { rows } = await (await getDb()).query<{ id: number }>(
+    "INSERT INTO journal_entries (title, prompt, body, created_at) VALUES ($1, $2, $3, $4) RETURNING id",
+    [title, prompt, body, created_at]
+  );
+  return { id: rows[0].id, title, prompt, body, created_at };
 }
 
-export function getJournalEntries(limit = 200): JournalEntry[] {
-  return getDb()
-    .prepare(
-      "SELECT id, title, prompt, body, created_at FROM journal_entries ORDER BY created_at DESC LIMIT ?"
-    )
-    .all(limit) as JournalEntry[];
+export async function getJournalEntries(limit = 200): Promise<JournalEntry[]> {
+  const { rows } = await (await getDb()).query<JournalEntry>(
+    "SELECT id, title, prompt, body, created_at FROM journal_entries ORDER BY created_at DESC LIMIT $1",
+    [limit]
+  );
+  return rows;
 }
 
-export function deleteJournalEntry(id: number): void {
-  getDb().prepare("DELETE FROM journal_entries WHERE id = ?").run(id);
+export async function deleteJournalEntry(id: number): Promise<void> {
+  await (await getDb()).query("DELETE FROM journal_entries WHERE id = $1", [id]);
 }

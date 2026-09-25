@@ -8,8 +8,8 @@ import { AppTopNav, AppBottomNav } from "@/components/AppNav";
 // Favorites can change between visits — never cache this page.
 export const dynamic = "force-dynamic";
 
-export default function Library() {
-  const favoriteToolIds = new Set(getFavoriteToolIds());
+export default async function Library() {
+  const favoriteToolIds = new Set(await getFavoriteToolIds());
 
   return (
     <>

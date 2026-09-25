@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { getFavoriteToolIds, setFavorite } from "@/lib/db";
 
-// Reads/writes a mutable local database — never cache this route.
+// Reads/writes a mutable database — never cache this route.
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  return NextResponse.json({ toolIds: getFavoriteToolIds() });
+  return NextResponse.json({ toolIds: await getFavoriteToolIds() });
 }
 
 export async function POST(request: Request) {
@@ -20,6 +20,6 @@ export async function POST(request: Request) {
     );
   }
 
-  setFavorite(toolId, favorited);
+  await setFavorite(toolId, favorited);
   return NextResponse.json({ ok: true, favorited });
 }

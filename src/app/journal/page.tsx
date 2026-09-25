@@ -6,8 +6,8 @@ import JournalEntryCard from "@/components/JournalEntryCard";
 // New entries land here immediately — never cache this page.
 export const dynamic = "force-dynamic";
 
-export default function Journal() {
-  const entries = getJournalEntries();
+export default async function Journal() {
+  const entries = await getJournalEntries();
 
   return (
     <>

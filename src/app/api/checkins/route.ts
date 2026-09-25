@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRecentCheckIns, recordCheckIn } from "@/lib/db";
 
-// Reads/writes a mutable local database — never cache this route.
+// Reads/writes a mutable database — never cache this route.
 export const dynamic = "force-dynamic";
 
 const LOCAL_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
@@ -21,10 +21,10 @@ export async function POST(request: Request) {
     );
   }
 
-  recordCheckIn(mood, localDate);
+  await recordCheckIn(mood, localDate);
   return NextResponse.json({ ok: true }, { status: 201 });
 }
 
 export async function GET() {
-  return NextResponse.json({ checkIns: getRecentCheckIns() });
+  return NextResponse.json({ checkIns: await getRecentCheckIns() });
 }
