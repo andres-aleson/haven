@@ -20,6 +20,22 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Database
+
+Data lives in Postgres, in the `haven` schema, accessed with [Drizzle ORM](https://orm.drizzle.team). Tables are defined in `src/db/schema.ts` and migrations live in `drizzle/`.
+
+- `DATABASE_URL` is used by the app. It connects as `haven_app`, a role that can only read and write rows in the `haven` schema.
+- `MIGRATION_DATABASE_URL` is used only by drizzle-kit, and needs a role that can create tables in `haven`. It is not set on Vercel.
+
+To change the schema, edit `src/db/schema.ts`, then run:
+
+```bash
+npm run db:generate   # write a new SQL migration to drizzle/
+npm run db:migrate    # apply it (needs MIGRATION_DATABASE_URL)
+```
+
+Apply migrations before deploying code that depends on them.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
