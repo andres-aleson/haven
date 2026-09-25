@@ -104,6 +104,21 @@ export const tools: CopingTool[] = [
       "Notice how your body feels now compared to when you started.",
     ],
   },
+  {
+    id: "pursed-lip-breathing",
+    title: "Pursed-Lip Breathing",
+    category: "breathing",
+    icon: "air",
+    time: "2 min",
+    blurb: "Breathe out slowly through your lips to slow a racing heart and ease tight breathing.",
+    steps: [
+      "Relax your shoulders and unclench your jaw.",
+      "Breathe in gently through your nose for 2 counts.",
+      "Purse your lips like you're blowing out a candle.",
+      "Breathe out slowly through your lips for 4 counts — twice as long as the inhale.",
+      "Repeat for 1–2 minutes, or until your breathing feels easier.",
+    ],
+  },
 
   // Sounds & Music
   {
