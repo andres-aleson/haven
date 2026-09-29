@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import MarketingHeader from "@/components/MarketingHeader";
+import HeroIllustration from "@/components/HeroIllustration";
 
 export default function Home() {
   return (
@@ -40,14 +40,9 @@ export default function Home() {
 
             <div className="relative w-full aspect-video lg:aspect-square flex items-center justify-center">
               <div className="absolute inset-0 bg-primary/5 rounded-full blur-3xl opacity-50 scale-110" />
-              <Image
-                alt="Haven Illustration"
-                width={800}
-                height={800}
-                className="w-full h-full object-contain relative z-20 drop-shadow-2xl"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJPldWBJQmrACXYE-wecYWE1LVu7q1bIDr0-qVimnwWxaQ7l6DmyPT1F8bBEjitH1cDbhhLnxSLO_X2d5DJBSIPJjwmFAE12RgXAuiV9iw1au9QmADTKKf3FZlp5C-j-hJuYjxZipDEnaD3MRIgiEyM4mMpL3Mnd0L7-DGNao-6fS2vOEZ5OXavGsKc-J8_5c5Y8aqkH8P4_HLoJ4d-tu5WmWnGHetyG2qDi1qsydruHe4ZgEwasW5z7daJLA9sBzLHMVro8BNO8gJ"
-                priority
-              />
+              <div className="w-full h-full relative z-20 drop-shadow-2xl">
+                <HeroIllustration />
+              </div>
             </div>
           </div>
         </section>
