@@ -19,6 +19,17 @@ export const categories: Category[] = [
   { id: "mindset", label: "Clear Your Head", accent: "var(--color-accent-mindset)" },
 ];
 
+export interface BreathingPhase {
+  label: string;
+  seconds: number;
+  type: "in" | "hold" | "out";
+}
+
+export interface BreathingPattern {
+  phases: BreathingPhase[];
+  cycles: number;
+}
+
 export interface CopingTool {
   id: string;
   title: string;
@@ -27,6 +38,7 @@ export interface CopingTool {
   time: string;
   blurb: string;
   steps: string[];
+  breathingPattern?: BreathingPattern;
 }
 
 export const tools: CopingTool[] = [
@@ -45,6 +57,15 @@ export const tools: CopingTool[] = [
       "Hold again for 4 counts.",
       "Repeat the cycle 4–6 times, or until you feel a bit calmer.",
     ],
+    breathingPattern: {
+      phases: [
+        { label: "Breathe In", seconds: 4, type: "in" },
+        { label: "Hold", seconds: 4, type: "hold" },
+        { label: "Breathe Out", seconds: 4, type: "out" },
+        { label: "Hold", seconds: 4, type: "hold" },
+      ],
+      cycles: 5,
+    },
   },
   {
     id: "physiological-sigh",
@@ -59,6 +80,14 @@ export const tools: CopingTool[] = [
       "Let out a long, slow exhale through your mouth.",
       "Repeat 1–3 times. Most people feel a shift after just one.",
     ],
+    breathingPattern: {
+      phases: [
+        { label: "Breathe In", seconds: 2, type: "in" },
+        { label: "Quick Second Inhale", seconds: 1, type: "in" },
+        { label: "Long Exhale", seconds: 6, type: "out" },
+      ],
+      cycles: 2,
+    },
   },
   {
     id: "4-7-8-breathing",
@@ -73,6 +102,14 @@ export const tools: CopingTool[] = [
       "Exhale completely through your mouth for 8 counts, like a soft whoosh.",
       "Repeat for 4 rounds.",
     ],
+    breathingPattern: {
+      phases: [
+        { label: "Breathe In", seconds: 4, type: "in" },
+        { label: "Hold", seconds: 7, type: "hold" },
+        { label: "Breathe Out", seconds: 8, type: "out" },
+      ],
+      cycles: 4,
+    },
   },
   {
     id: "belly-breathing",
@@ -87,6 +124,13 @@ export const tools: CopingTool[] = [
       "Breathe out slowly through your mouth, letting your belly fall.",
       "Keep going for 1–2 minutes, at whatever pace feels comfortable.",
     ],
+    breathingPattern: {
+      phases: [
+        { label: "Breathe In", seconds: 4, type: "in" },
+        { label: "Breathe Out", seconds: 6, type: "out" },
+      ],
+      cycles: 8,
+    },
   },
   {
     id: "breathing-countdown",
@@ -103,6 +147,16 @@ export const tools: CopingTool[] = [
       "Breathe in for 1 count, then let it go.",
       "Notice how your body feels now compared to when you started.",
     ],
+    breathingPattern: {
+      phases: [
+        { label: "Breathe In", seconds: 5, type: "in" },
+        { label: "Breathe Out", seconds: 4, type: "out" },
+        { label: "Breathe In", seconds: 3, type: "in" },
+        { label: "Breathe Out", seconds: 2, type: "out" },
+        { label: "Breathe In", seconds: 1, type: "in" },
+      ],
+      cycles: 1,
+    },
   },
   {
     id: "pursed-lip-breathing",
@@ -118,6 +172,13 @@ export const tools: CopingTool[] = [
       "Breathe out slowly through your lips for 4 counts — twice as long as the inhale.",
       "Repeat for 1–2 minutes, or until your breathing feels easier.",
     ],
+    breathingPattern: {
+      phases: [
+        { label: "Breathe In", seconds: 2, type: "in" },
+        { label: "Breathe Out", seconds: 4, type: "out" },
+      ],
+      cycles: 10,
+    },
   },
 
   // Sounds & Music

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { categories, getToolById, tools } from "@/lib/tools";
 import { SOUND_LOOP_FACTORIES } from "@/lib/ambientSound";
 import SoundPlayButton from "@/components/SoundPlayButton";
+import BreathingTimer from "@/components/BreathingTimer";
 
 export function generateStaticParams() {
   return tools.map((tool) => ({ toolId: tool.id }));
@@ -43,6 +44,12 @@ export default async function ToolDetail({
         <p className="text-body-lg font-body-lg text-on-surface-variant max-w-md">
           {tool.blurb}
         </p>
+
+        {tool.breathingPattern && (
+          <div className="w-full max-w-md mt-stack-sm">
+            <BreathingTimer pattern={tool.breathingPattern} />
+          </div>
+        )}
 
         <div className="w-full max-w-md text-left bg-surface-container-lowest rounded-xl border-[1.5px] border-primary/10 soft-glow-shadow p-stack-lg mt-stack-sm">
           <h2 className="text-label-md font-label-md text-primary uppercase tracking-widest mb-stack-md">
