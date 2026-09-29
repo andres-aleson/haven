@@ -77,12 +77,18 @@ export default function BreathingTimer({ pattern }: { pattern: BreathingPattern 
   }, [state.status, phases, cycles]);
 
   function start() {
+    const firstPhase = phases[0];
     setState({
       status: "running",
       cycleIndex: 0,
       phaseIndex: 0,
-      secondsLeft: phases[0].seconds,
-      circleScale: SHRINK_SCALE,
+      secondsLeft: firstPhase.seconds,
+      // Every breathing pattern opens on an "in" phase, so this is the
+      // value that actually needs to change from the resting circle for
+      // a transition to fire — setting it back to SHRINK_SCALE (the same
+      // value it's already resting at) was why the very first breath
+      // never visibly moved until the second cycle changed it for real.
+      circleScale: firstPhase.type === "in" ? GROW_SCALE : SHRINK_SCALE,
     });
   }
 
