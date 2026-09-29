@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AppTopNav, AppBottomNav } from "@/components/AppNav";
+import { getRandomPrompt } from "@/lib/journalPrompts";
 
 const SUGGESTED_PROMPTS = [
   "What's on my mind right now",
@@ -48,6 +49,10 @@ export default function NewJournalEntry() {
     }
   }
 
+  function generatePrompt() {
+    setPrompt(getRandomPrompt(prompt));
+  }
+
   return (
     <>
       <header className="bg-background flex justify-between items-center w-full px-container-margin py-stack-sm max-w-7xl mx-auto z-50">
@@ -80,6 +85,21 @@ export default function NewJournalEntry() {
           <div className="flex flex-col gap-stack-sm">
             <span className="text-label-md font-label-md text-on-surface-variant">
               Prompt (optional)
+            </span>
+
+            <button
+              type="button"
+              onClick={generatePrompt}
+              className="w-fit flex items-center gap-2 bg-secondary-container text-on-secondary-container px-5 py-3 rounded-full font-label-md text-label-md soft-glow-shadow hover:scale-105 active:scale-95 transition-all duration-200"
+            >
+              <span className="material-symbols-outlined" aria-hidden="true">
+                casino
+              </span>
+              Generate me a prompt
+            </button>
+
+            <span className="text-caption font-caption text-on-surface-variant">
+              or pick a quick one
             </span>
             <div className="flex flex-wrap gap-stack-sm">
               {SUGGESTED_PROMPTS.map((p) => (
