@@ -78,17 +78,32 @@ const emotions: Emotion[] = [
 
 export default function MoodCheckIn() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [saveFailed, setSaveFailed] = useState(false);
   const selected = emotions.find((e) => e.id === selectedId) ?? null;
+
+  async function saveCheckIn(id: string) {
+    setSaveFailed(false);
+    try {
+      const res = await fetch("/api/checkins", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mood: id, localDate: getTodayLocalDateString() }),
+      });
+      // fetch() only rejects on a network failure — a 500 response still
+      // resolves, so this has to be checked explicitly to catch it too.
+      if (!res.ok) throw new Error("Check-in save failed");
+    } catch {
+      setSaveFailed(true);
+    }
+  }
 
   function handleSelect(id: string) {
     setSelectedId(id);
-    fetch("/api/checkins", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mood: id, localDate: getTodayLocalDateString() }),
-    }).catch(() => {
-      // Check-in still works locally even if saving the streak fails.
-    });
+    saveCheckIn(id);
+  }
+
+  function handleRetry() {
+    if (selectedId) saveCheckIn(selectedId);
   }
 
   return (
@@ -143,6 +158,33 @@ export default function MoodCheckIn() {
               {selected.message}
             </p>
           </div>
+
+          {saveFailed && (
+            <div
+              role="alert"
+              className="mt-stack-sm bg-tertiary-container/20 border-[1.5px] border-tertiary/20 rounded-xl px-stack-md py-stack-sm flex items-center justify-between gap-stack-md flex-wrap"
+            >
+              <div className="flex items-center gap-stack-sm">
+                <span
+                  className="material-symbols-outlined text-tertiary"
+                  aria-hidden="true"
+                >
+                  cloud_off
+                </span>
+                <p className="text-body-md font-body-md text-on-surface-variant">
+                  That didn&apos;t save to your streak — no pressure, want to
+                  try again?
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleRetry}
+                className="text-label-md font-label-md text-primary font-bold flex-shrink-0"
+              >
+                Try again
+              </button>
+            </div>
+          )}
 
           <Link
             href="/library"
