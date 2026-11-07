@@ -10,7 +10,7 @@ import { AppBottomNav } from "@/components/AppNav";
 export const dynamic = "force-dynamic";
 
 export default async function Library() {
-  const favoriteToolIds = new Set(await getFavoriteToolIds());
+  const favoriteToolIds = new Set(await getFavoriteToolIds().catch(() => [] as string[]));
 
   return (
     <>

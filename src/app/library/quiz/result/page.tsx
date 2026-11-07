@@ -24,7 +24,7 @@ export default async function QuizResult({
   if (!emotionId || !emotion) redirect("/library/quiz");
 
   const { blurb, toolIds } = QUIZ_RESULTS[emotionId];
-  const favoriteIds = new Set(await getFavoriteToolIds());
+  const favoriteIds = new Set(await getFavoriteToolIds().catch(() => [] as string[]));
   const matched = toolIds
     .map((id) => tools.find((t) => t.id === id))
     .filter((t): t is NonNullable<typeof t> => Boolean(t));
