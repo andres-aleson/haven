@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getJournalEntries } from "@/lib/db";
+import { getJournalEntries, type JournalEntry } from "@/lib/db";
 import AppHeader from "@/components/AppHeader";
 import { AppBottomNav } from "@/components/AppNav";
 import JournalEntryCard from "@/components/JournalEntryCard";
@@ -8,7 +8,16 @@ import JournalEntryCard from "@/components/JournalEntryCard";
 export const dynamic = "force-dynamic";
 
 export default async function Journal() {
-  const entries = await getJournalEntries();
+  // If the database can't be reached, still render the page (as empty)
+  // instead of a server error, and tell the user their entries can't load.
+  let entries: JournalEntry[] = [];
+  let unavailable = false;
+  try {
+    entries = await getJournalEntries();
+  } catch (err) {
+    console.error("Failed to load journal entries", err);
+    unavailable = true;
+  }
 
   return (
     <>
@@ -34,6 +43,16 @@ export default async function Journal() {
           </span>
           New Entry
         </Link>
+
+        {unavailable && (
+          <p
+            role="status"
+            className="mb-stack-lg bg-surface-container-high rounded-xl px-stack-md py-stack-sm text-body-md font-body-md text-on-surface-variant"
+          >
+            We can&apos;t load your entries right now, and new entries may not
+            save. Please try again in a little while.
+          </p>
+        )}
 
         {entries.length === 0 ? (
           <div className="bg-surface-container-lowest rounded-xl border-[1.5px] border-primary/10 soft-glow-shadow p-stack-xl text-center flex flex-col items-center gap-stack-md">
