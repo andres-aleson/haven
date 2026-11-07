@@ -4,6 +4,7 @@ import { categories, getToolById, tools } from "@/lib/tools";
 import { SOUND_LOOP_FACTORIES } from "@/lib/ambientSound";
 import SoundPlayButton from "@/components/SoundPlayButton";
 import BreathingTimer from "@/components/BreathingTimer";
+import TalkToSomeoneButton from "@/components/TalkToSomeoneButton";
 
 export function generateStaticParams() {
   return tools.map((tool) => ({ toolId: tool.id }));
@@ -27,6 +28,7 @@ export default async function ToolDetail({
         <Link href="/" className="text-headline-md font-headline-md text-primary">
           Haven
         </Link>
+        <TalkToSomeoneButton variant="header" />
       </header>
 
       <main className="flex-grow flex flex-col items-center justify-center text-center px-container-margin py-stack-xl gap-stack-md">
@@ -68,6 +70,11 @@ export default async function ToolDetail({
             ))}
           </ol>
         </div>
+
+        <p className="max-w-md text-caption font-caption text-on-surface-variant">
+          A coping tool for tough moments — not a replacement for therapy or
+          professional care.
+        </p>
 
         {isPlayable && <SoundPlayButton toolId={tool.id} title={tool.title} />}
 

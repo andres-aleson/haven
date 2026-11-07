@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MarketingHeader from "@/components/MarketingHeader";
+import MarketingBottomNav from "@/components/MarketingBottomNav";
 
 const PRINCIPLES = [
   {
@@ -24,7 +25,7 @@ export default function Mission() {
     <>
       <MarketingHeader active="/mission" />
 
-      <main className="flex-grow w-full max-w-3xl mx-auto px-container-margin py-stack-xl">
+      <main className="flex-grow w-full max-w-3xl mx-auto px-container-margin py-stack-xl pb-32 md:pb-stack-xl">
         <section className="mb-stack-xl text-center">
           <h1 className="text-headline-lg font-headline-lg text-on-surface mb-stack-sm">
             Why We Built Haven
@@ -116,6 +117,8 @@ export default function Mission() {
           </Link>
         </div>
       </main>
+
+      <MarketingBottomNav active="/mission" />
     </>
   );
 }

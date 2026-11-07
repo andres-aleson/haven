@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MarketingHeader from "@/components/MarketingHeader";
+import MarketingBottomNav from "@/components/MarketingBottomNav";
 
 const POINTS = [
   {
@@ -29,7 +30,7 @@ export default function Privacy() {
     <>
       <MarketingHeader active="/privacy" />
 
-      <main className="flex-grow w-full max-w-3xl mx-auto px-container-margin py-stack-xl">
+      <main className="flex-grow w-full max-w-3xl mx-auto px-container-margin py-stack-xl pb-32 md:pb-stack-xl">
         <section className="mb-stack-xl text-center">
           <h1 className="text-headline-lg font-headline-lg text-on-surface mb-stack-sm">
             Your Privacy, Protected
@@ -75,6 +76,8 @@ export default function Privacy() {
           </Link>
         </div>
       </main>
+
+      <MarketingBottomNav active="/privacy" />
     </>
   );
 }

@@ -3,7 +3,8 @@ import { categories, getToolsByCategory } from "@/lib/tools";
 import { getFavoriteToolIds } from "@/lib/db";
 import SoundToolCard from "@/components/SoundToolCard";
 import ToolCard from "@/components/ToolCard";
-import { AppTopNav, AppBottomNav } from "@/components/AppNav";
+import AppHeader from "@/components/AppHeader";
+import { AppBottomNav } from "@/components/AppNav";
 
 // Favorites can change between visits — never cache this page.
 export const dynamic = "force-dynamic";
@@ -14,21 +15,7 @@ export default async function Library() {
   return (
     <>
       {/* Top App Bar */}
-      <header className="bg-background flex justify-between items-center w-full px-container-margin py-stack-sm max-w-7xl mx-auto z-50">
-        <Link href="/" className="text-headline-md font-headline-md text-primary">
-          Haven
-        </Link>
-        <AppTopNav active="/library" />
-        <div className="flex items-center gap-stack-md">
-          <Link
-            href="/favorites"
-            aria-label="Favorites"
-            className="material-symbols-outlined text-primary p-2 hover:bg-surface-variant/50 rounded-full transition-all"
-          >
-            favorite
-          </Link>
-        </div>
-      </header>
+      <AppHeader active="/library" />
 
       <main className="flex-grow w-full max-w-7xl mx-auto px-container-margin py-stack-xl pb-32 md:pb-stack-xl">
         <section className="mb-stack-xl">
@@ -40,6 +27,35 @@ export default async function Library() {
             choice.
           </p>
         </section>
+
+        <Link
+          href="/library/quiz"
+          className="mb-stack-xl flex items-center gap-stack-md bg-secondary-container/30 border-[1.5px] border-secondary/20 rounded-xl p-stack-lg hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-200"
+        >
+          <div className="w-14 h-14 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0">
+            <span
+              className="material-symbols-outlined text-on-secondary-container"
+              aria-hidden="true"
+            >
+              quiz
+            </span>
+          </div>
+          <div className="flex-grow">
+            <h2 className="text-headline-md font-headline-md text-on-surface">
+              Not sure what you need?
+            </h2>
+            <p className="text-body-md font-body-md text-on-surface-variant">
+              Take a 1-minute feelings quiz and we&apos;ll match you with tools
+              that fit how you feel right now.
+            </p>
+          </div>
+          <span
+            className="material-symbols-outlined text-primary flex-shrink-0"
+            aria-hidden="true"
+          >
+            arrow_forward
+          </span>
+        </Link>
 
         {categories.map((category) => {
           const categoryTools = getToolsByCategory(category.id);

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MarketingHeader from "@/components/MarketingHeader";
+import MarketingBottomNav from "@/components/MarketingBottomNav";
 import HeroIllustration from "@/components/HeroIllustration";
 
 export default function Home() {
@@ -8,7 +9,7 @@ export default function Home() {
       {/* Top App Bar */}
       <MarketingHeader active="/" />
 
-      <main className="flex-grow flex flex-col">
+      <main className="flex-grow flex flex-col pb-32 md:pb-0">
         {/* Hero */}
         <section className="relative overflow-hidden pt-stack-xl pb-stack-xl px-container-margin md:pt-32 md:pb-48">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-stack-xl items-center relative z-10">
@@ -128,42 +129,7 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Bottom nav (mobile only) */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest shadow-[0_-4px_20px_0_rgba(74,101,73,0.06)] flex justify-around items-center px-4 py-2 rounded-t-xl">
-        <a
-          className="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200 transition-transform"
-          href="#"
-        >
-          <span
-            className="material-symbols-outlined"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            home
-          </span>
-          <span className="text-caption font-caption">Home</span>
-        </a>
-        <a
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all"
-          href="#"
-        >
-          <span className="material-symbols-outlined">grid_view</span>
-          <span className="text-caption font-caption">Library</span>
-        </a>
-        <a
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all"
-          href="#"
-        >
-          <span className="material-symbols-outlined">insights</span>
-          <span className="text-caption font-caption">Stats</span>
-        </a>
-        <a
-          className="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all"
-          href="#"
-        >
-          <span className="material-symbols-outlined">person</span>
-          <span className="text-caption font-caption">Profile</span>
-        </a>
-      </nav>
+      <MarketingBottomNav active="/" />
 
       {/* Footer (desktop only) */}
       <footer className="hidden md:block py-stack-lg px-container-margin border-t border-outline-variant/30 mt-auto bg-surface-container-low">
